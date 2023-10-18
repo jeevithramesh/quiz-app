@@ -3,13 +3,13 @@ import { RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
   {
-    path: 'quiz',
+    path: '',
     loadChildren: () =>
       import('../lib/components/take-quiz/take-quiz.module').then(
         (m) => m.TakeQuizModule
       ),
   },
-  { path: '**', redirectTo: 'quiz' },
+  { path: '**', redirectTo: '' },
 ];
 
 @NgModule({

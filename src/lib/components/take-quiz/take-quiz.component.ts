@@ -1,5 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { QuizService } from 'src/lib/services/quiz.service';
+import { quizData } from 'src/lib/services/quiz';
+
+interface quiz {
+  question: string;
+  options: string[];
+  answer: string;
+}
 
 @Component({
   selector: 'app-take-quiz',
@@ -7,23 +13,17 @@ import { QuizService } from 'src/lib/services/quiz.service';
   styleUrls: ['./take-quiz.component.scss'],
 })
 export class TakeQuizComponent implements OnInit {
-  quizData: any;
+  quizData: quiz[] = [];
   currentQuestionIndex = 0;
   selectedOption: string = '';
   userAnswers: string[] = [];
   showResults = false;
 
-  constructor(private quizService: QuizService) {}
+  constructor() {}
 
   ngOnInit() {
-    this.loadQuizData();
-  }
-
-  loadQuizData() {
-    this.quizService.getQuizData().subscribe((data) => {
-      this.quizData = data;
-      this.userAnswers = Array(this.quizData.length).fill('');
-    });
+    this.quizData = quizData;
+    this.userAnswers = Array(this.quizData.length).fill('');
   }
 
   selectOption(option: string) {
