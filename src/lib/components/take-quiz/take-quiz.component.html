@@ -1,0 +1,127 @@
+<div *ngIf="quizData" class="container mt-2">
+  <ng-container *ngIf="!showResults">
+    <h2 class="text-center mb-2">Quiz</h2>
+
+    <div class="card">
+      <div class="card-header">
+        <h2 class="card-title">
+          {{ quizData[currentQuestionIndex].question }}
+        </h2>
+      </div>
+      <div class="card-body">
+        <div *ngFor="let option of quizData[currentQuestionIndex].options">
+          <div class="form-check">
+            <input
+              class="form-check-input pointer"
+              type="radio"
+              [value]="option"
+              [(ngModel)]="selectedOption"
+              (change)="selectOption(option)"
+              [id]="option"
+            />
+            <label [for]="option" class="form-check-label pointer">{{
+              option
+            }}</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="card-footer justify-content-center">
+        <nav aria-label="Question Navigation" class="mt-4">
+          <ul class="pagination justify-content-center">
+            <li class="page-item">
+              <a
+                tabindex="0"
+                class="page-link pointer"
+                (click)="goToQuestion(currentQuestionIndex - 1)"
+                (keyup.enter)="goToQuestion(currentQuestionIndex - 1)"
+                [ngClass]="{ 'nav-disabled': currentQuestionIndex === 0 }"
+              >
+                <strong> < </strong>
+              </a>
+            </li>
+            <li
+              class="page-item"
+              *ngFor="let _ of quizData; let i = index"
+              [ngClass]="{
+                answered: isQuestionAnswered(i),
+                current: currentQuestionIndex === i,
+                unanswered: !isQuestionAnswered(i)
+              }"
+            >
+              <a
+                tabindex="0"
+                class="page-link pointer"
+                (click)="goToQuestion(i)"
+                (keyup.enter)="goToQuestion(i)"
+                >{{ i + 1 }}</a
+              >
+            </li>
+            <li class="page-item">
+              <a
+                tabindex="0"
+                class="page-link pointer"
+                (click)="goToQuestion(currentQuestionIndex + 1)"
+                (keyup.enter)="goToQuestion(currentQuestionIndex + 1)"
+                [ngClass]="{
+                  'nav-disabled': currentQuestionIndex === quizData.length - 1
+                }"
+              >
+                <strong> > </strong>
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+    <div class="m-2 text-center">
+      <button
+        [disabled]="!canSubmit()"
+        class="btn btn-primary"
+        (click)="showResults = true"
+      >
+        Submit
+      </button>
+    </div>
+  </ng-container>
+  <ng-container *ngIf="showResults">
+    <h2 class="text-center mb-2">Results</h2>
+
+    <div class="card mb-2" *ngFor="let question of quizData; let i = index">
+      <div class="card-header bg-secondary text-white">
+        Question {{ i + 1 }}
+      </div>
+      <div class="card-body">
+        <strong>{{ question.question }}</strong>
+
+        <div *ngIf="userAnswers[i]">
+          <div>
+            Your Answer:
+            <strong
+              [ngClass]="{
+                'text-success': checkAnswer(i),
+                'text-danger': !checkAnswer(i)
+              }"
+            >
+              {{ userAnswers[i] }}
+            </strong>
+          </div>
+
+          <div *ngIf="!checkAnswer(i)">
+            Correct Answer: <strong>{{ question.answer }}</strong>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="alert alert-primary mt-2 text-center">
+      Your Score: <strong>{{ getScore() }}/{{ quizData.length }}</strong>
+    </div>
+
+    <div class="text-center m-2">
+      <button class="btn btn-primary" (click)="takeQuizAgain()">
+        Take Quiz Again
+      </button>
+    </div>
+  </ng-container>
+</div>
