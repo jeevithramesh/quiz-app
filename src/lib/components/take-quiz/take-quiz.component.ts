@@ -13,11 +13,14 @@ interface quiz {
   styleUrls: ['./take-quiz.component.scss'],
 })
 export class TakeQuizComponent implements OnInit {
+
+  userName: string = '';
   quizData: quiz[] = [];
   currentQuestionIndex = 0;
   selectedOption: string = '';
   userAnswers: string[] = [];
-  showResults = false;
+  // showResults = false;
+  currentPageIndex = 0;
 
   constructor() {}
 
@@ -58,7 +61,7 @@ export class TakeQuizComponent implements OnInit {
   }
 
   takeQuizAgain() {
-    this.showResults = false;
+    this.currentPageIndex = 1;
     this.currentQuestionIndex = 0;
     this.selectedOption = '';
     this.userAnswers = Array(this.quizData.length).fill('');

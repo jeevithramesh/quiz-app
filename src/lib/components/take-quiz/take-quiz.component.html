@@ -1,13 +1,47 @@
-<div *ngIf="quizData" class="container mt-2">
-  <ng-container *ngIf="!showResults">
-    <h2 class="text-center mb-2">Quiz</h2>
+<div *ngIf="quizData" class="bg-container d-flex overflow-auto p-4">
+  <div class="m-auto ip-max-width" *ngIf="currentPageIndex === 0">
+    <h3 class="text-center mb-2">Welcome to the Mini Quiz App!</h3>
+    <div class="card shadow fade-in-fwd">
+      <div class="card-body text-center mb-2">
+        <h4>Please enter your name</h4>
 
-    <div class="card">
-      <div class="card-header">
-        <h2 class="card-title">
-          {{ quizData[currentQuestionIndex].question }}
-        </h2>
+        <div class="form-group my-4">
+          <input
+            type="text"
+            class="form-control"
+            id="userName"
+            [(ngModel)]="userName"
+            required
+          />
+        </div>
       </div>
+    </div>
+
+    <div class="m-2 text-center">
+      <button
+        [disabled]="!userName.length"
+        type="button"
+        class="btn btn-light"
+        (click)="currentPageIndex = 1"
+      >
+        Start Quiz
+      </button>
+    </div>
+  </div>
+  <div class="m-auto ip-max-width" *ngIf="currentPageIndex === 1">
+    <h3 class="text-center mb-2">
+      Hello {{ userName }}! <br />
+      Choose an option for the following questions.
+    </h3>
+
+    <div class="card shadow mb-2 fade-in-bottom">
+      <div class="card-body">
+        <h4 class="card-title">
+          {{ quizData[currentQuestionIndex].question }}
+        </h4>
+      </div>
+    </div>
+    <div class="card shadow fade-in-top">
       <div class="card-body">
         <div *ngFor="let option of quizData[currentQuestionIndex].options">
           <div class="form-check">
@@ -27,7 +61,7 @@
       </div>
 
       <div class="card-footer justify-content-center">
-        <nav aria-label="Question Navigation" class="mt-4">
+        <nav aria-label="Question Navigation" class="mt-3">
           <ul class="pagination justify-content-center">
             <li class="page-item">
               <a
@@ -79,18 +113,25 @@
     </div>
     <div class="m-2 text-center">
       <button
+        type="button"
         [disabled]="!canSubmit()"
-        class="btn btn-primary"
-        (click)="showResults = true"
+        class="btn btn-light"
+        (click)="currentPageIndex = 2"
       >
         Submit
       </button>
     </div>
-  </ng-container>
-  <ng-container *ngIf="showResults">
-    <h2 class="text-center mb-2">Results</h2>
+  </div>
+  <div class="m-auto ip-max-width" *ngIf="currentPageIndex === 2">
+    <h3 class="text-center mb-2">
+      Thanks for taking the quiz {{ userName }}! <br />
+      Here are your results.
+    </h3>
 
-    <div class="card mb-2" *ngFor="let question of quizData; let i = index">
+    <div
+      class="card shadow mb-2 fade-in-fwd"
+      *ngFor="let question of quizData; let i = index"
+    >
       <div class="card-header bg-secondary text-white">
         Question {{ i + 1 }}
       </div>
@@ -117,14 +158,20 @@
       </div>
     </div>
 
-    <div class="alert alert-primary mt-2 text-center">
-      Your Score: <strong>{{ getScore() }}/{{ quizData.length }}</strong>
+    <div class="card mt-2 text-center">
+      <div class="card-body">
+        Your have scored
+        <ng-container *ngIf="getScore() === quizData.length">
+          a perfect
+        </ng-container>
+        <strong>{{ getScore() }}/{{ quizData.length }}</strong>
+      </div>
     </div>
 
     <div class="text-center m-2">
-      <button class="btn btn-primary" (click)="takeQuizAgain()">
+      <button type="button" class="btn btn-light" (click)="takeQuizAgain()">
         Take Quiz Again
       </button>
     </div>
-  </ng-container>
+  </div>
 </div>
