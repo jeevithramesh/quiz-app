@@ -36,8 +36,9 @@
                 (click)="goToQuestion(currentQuestionIndex - 1)"
                 (keyup.enter)="goToQuestion(currentQuestionIndex - 1)"
                 [ngClass]="{ 'nav-disabled': currentQuestionIndex === 0 }"
+                aria-label="Previous"
               >
-                <strong> < </strong>
+                <span aria-hidden="true">&laquo;</span>
               </a>
             </li>
             <li
@@ -54,8 +55,9 @@
                 class="page-link pointer"
                 (click)="goToQuestion(i)"
                 (keyup.enter)="goToQuestion(i)"
-                >{{ i + 1 }}</a
               >
+                {{ i + 1 }}
+              </a>
             </li>
             <li class="page-item">
               <a
@@ -66,8 +68,9 @@
                 [ngClass]="{
                   'nav-disabled': currentQuestionIndex === quizData.length - 1
                 }"
+                aria-label="Next"
               >
-                <strong> > </strong>
+                <span aria-hidden="true">&raquo;</span>
               </a>
             </li>
           </ul>
